@@ -1,0 +1,389 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@model PudgeManga_Project.ViewModels.MangaViewModels.MangaChaptersViewModel
+
+<head>
+    <link rel="stylesheet" href="~/css/manga.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/rating.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <main class="py-5 main">
+        <div class="container py-5">
+            <div class="row">
+                <div class="manga-title col-md-4 col-12 d-flex align-items-center flex-column">
+                    <img src="@Model.Manga.CoverUrl">
+                    <h1 class="fs-4 d-block d-md-none pt-2">@Model.Manga.Title</h1>
+                    <a class="nav-link" asp-controller="Manga" asp-action="Reading"
+                        asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="1">
+                        <div class="pt-2">
+                            <button type="button" class="btn btn-warning text-white fs-4">Читати мангу
+                                з
+                                початку</button>
+                        </div>
+                    </a>
+                    <div class="stars d-flex d-md-none d-flex align-items-center justify-content-center">
+                        <div class="rating d-flex align-items-center" data-vote="0">
+
+
+                            <div class="star">
+
+                                <span class="full" data-value="1"></span>
+                                <span class="half" data-value="0.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="2"></span>
+                                <span class="half" data-value="1.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="3"></span>
+                                <span class="half" data-value="2.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="4"></span>
+                                <span class="half" data-value="3.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="5"></span>
+                                <span class="half" data-value="4.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="score fs-3 ms-3">
+                                <span class="score-rating js-score">0</span>
+                                <span>/</span>
+                                <span class="total">5</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="other-info mt-3 ms-4 px-5 py-2 d-flex flex-row justify-content-md-start justify-content-between flex-column flex-wrap">
+                        <div class="info-block mb-3">
+                            <h4 class="text-secondary fs-5">Тип</h4>
+                            <p>@Model.Manga.Type</p>
+                        </div>
+                        <div class="info-block mb-3">
+                            <h4 class="text-secondary fs-5">Жанр</h4>
+                            <p>@string.Join(", ", Model.Manga.MangaGenres.Select(mg => mg.Genre.Name))</p>
+                        </div>
+                        <div class="info-block mb-3">
+                            <h4 class="text-secondary fs-5">Автор</h4>
+                            <p>@Model.Manga.Author</p>
+                        </div>
+                        <div class="info-block mb-3">
+                            <h4 class="text-secondary fs-5">Художник</h4>
+                            <p>@Model.Manga.Artist</p>
+                        </div>
+                        <div class="info-block mb-3">
+                            <h4 class="text-secondary fs-5">Видавництво</h4>
+                            <p>@Model.Manga.Publish</p>
+                        </div>
+                        <div class="info-block mb-3">
+                            <h4 class="text-secondary fs-5">Перекладач</h4>
+                            <p>@Model.Manga.Translator</p>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="col-md-8 col-12">
+
+                    <div class="top-text-block d-flex justify-content-between flex-wrap">
+                        <h1 class="fs-3 d-none pt-2 d-md-block">@Model.Manga.Title</h1>
+                        <div class="stars d-flex align-items-center justify-content-end d-none d-md-flex">
+                            <div class="rating d-flex align-items-center" data-vote="0">
+                                <form method="post" asp-action="RateManga">
+                                    <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
+                                    <input type="hidden" name="mangaId" value="@Model.Manga.MangaId" />
+                                    <input type="hidden" id="valueSubmit" name="value" value="" />
+                                    <input type="submit" class="d-none" id="submitButtons">
+                                </form>
+                                <div class="star">
+
+                                    <span class="full" data-value="1"></span>
+                                    <span class="half" data-value="0.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="2"></span>
+                                    <span class="half" data-value="1.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="3"></span>
+                                    <span class="half" data-value="2.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="4"></span>
+                                    <span class="half" data-value="3.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="5"></span>
+                                    <span class="half" data-value="4.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="score fs-3 ms-3">
+                                    <span class="score-rating js-score">0</span>
+                                    <span>/</span>
+                                    <span class="total">5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom-text-block mt-4">
+                        <div class="top-nav d-flex flex-wrap">
+
+                            <button class="nav-link tablinks" id="defaultOpen" onclick="openTab(event, 'Description')">
+                                <div class="text-body-secondary fs-5">Опис</div>
+                            </button>
+                            <button class="nav-link tablinks" onclick="openTab(event, 'Chapter')">
+                                <div class="text-body-secondary fs-5">Глави</div>
+                            </button>
+                            <button class="nav-link tablinks" id="commentButton" onclick="openTab(event, 'Comment')">
+                                <div class="text-body-secondary fs-5">Коментарі</div>
+                            </button>
+                        </div>
+
+
+
+
+                        <div class="p-5 tabcontent" id="Description">
+                            <p>@Model.Manga.Description</p>
+                        </div>
+
+                        <div class="p-5 pt-3 tabcontent" id="Chapter">
+
+
+                            <div class="stroke d-flex text-white-50 border-bottom border-white">
+                                <p>Назва</p>
+                                <p>дата виходу</p>
+                            </div>
+                            @foreach (var chapter in Model.Manga.Chapters.Where(ch => ch.MangaID ==
+                            Model.Manga.MangaId).OrderByDescending(ch => ch.ChapterNumber))
+                            {
+                                <div class="stroke d-flex mt-2">
+                                    <a class="nav-link" asp-controller="Manga" asp-action="Reading"
+                                        asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
+                                        <p class="fs-6">Глава @chapter.ChapterNumber - @chapter.Title</p>
+                                    </a>
+                                    <p class="fs-6 text-white-50">@chapter.PublicationDate</p>
+                                </div>
+                            }
+                        </div>
+                        <div class="p-5 pt-3 tabcontent" id="Comment">
+                            <!-- Форма для додавання нового коментаря -->
+                            <div class="row mt-4">
+                                <h3 class="page-title col-12">Додати коментар</h3>
+                                <div class="row">
+                                    <div class="col-6 col-sm-4 col-lg-2 user-photo">
+                                        <img class="" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                    </div>
+                                    <div class="col-12 col-sm-8">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <textarea class="form-control text-secondary" id="commentInput"
+                                                    cols="15" placeholder="Напишіть ваш коментар"></textarea>
+                                            </div>
+                                            <div class="panel-heading comment-action">
+                                                <div class="submit-comment">
+                                                    <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
+                                                    <a href="javascript:void(0)" id="addNewCommentBtn"
+                                                        class="btn btn-secondary" onclick="addComment()">Submit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Контейнер для відображення коментарів -->
+                            <div id="comments-container">
+                                @await Html.PartialAsync("~/Views/Shared/_CommentPartial.cshtml", Model.Comments)
+                            </div>
+                        </div>
+
+
+                        <script>
+
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="~/js/manga-tabs.js"></script>
+    <script src="~/js/rating.js"></script>
+    <script>
+
+        // JavaScript function to add HTML
+        function addHTML(elementID, dataId) {
+            var html = `
+
+    <div class="row mt-4 ms-3">
+    <div class="row">
+        <div class="col-6 col-sm-4 col-lg-2 user-photo">
+            <img class="" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+        </div>
+        <div class="col-12 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <textarea class="form-control text-secondary" id="commentInput${dataId}"
+                        cols="15" placeholder="Напишіть ваш коментар"></textarea>
+                </div>
+                <div class="panel-heading comment-action">
+                    <div class="submit-comment">
+                        <a href="javascript:void(0)" id="addNewCommentBtn"
+                            class="btn btn-secondary" onclick="addComment(${dataId})">Submit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>`;
+            document.getElementById(elementID).innerHTML = html;
+            console.log(dataId);
+        }
+
+        // Button with onclick event
+
+
+        function addComment(dataId) {
+            // Отримання значення коментаря з текстового поля
+            var commentText = $('#commentInput').val();
+            var parentId = null;
+            if (dataId != null) {
+                commentText = $('#commentInput' + dataId).val();
+                var parentId = dataId;
+            }
+
+
+            // Отримання значення MangaId
+            var mangaId = @Model.Manga.MangaId; // Наприклад, якщо це фіксоване значення
+
+            // AJAX-запит для додавання нового коментаря
+            $.ajax({
+                url: '/Manga/CreateComment',
+                type: 'POST',
+                contentType: 'application/json',  // Встановіть правильний Content-Type
+                data: JSON.stringify({
+                    CommentText: commentText,
+                    ParentId: parentId,
+                    MangaId: mangaId
+                }),
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+
+                    // Очищення текстового поля
+                    $('#commentInput').val('');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        document.getElementById("commentButton").addEventListener("click", function () {
+            $.ajax({
+                url: '/Manga/GetComments/' + @Model.Manga.MangaId,
+                type: 'GET',
+                data: { mangaId: mangaId },
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+
+
+
+
+
+        var starClicked = false;
+
+        var storedRating = localStorage.getItem('rating');
+
+        // If the rating value is not stored, set a default value
+        var ratingString = '@Model.AverageRating';
+        console.log(ratingString);
+        var defaultRating = parseFloat(ratingString);
+        console.log(defaultRating);
+
+        // Use the stored rating value if available, otherwise use the default value
+        var currentRating = storedRating !== null ? parseFloat(storedRating) : defaultRating;
+
+        // Set the initial rating display
+        $('.score-rating').text(parseFloat(currentRating));
+
+        $('.half, .full').click(function () {
+            if ($(this).hasClass('half')) {
+                setHalfStarState(this);
+            } else {
+                setFullStarState(this);
+            }
+            var value = $(this).data('value');
+            $('.score-rating').text(value); // Змінено тут
+            $(this).closest('.rating').data('vote', value);
+
+            // Заміна крапки на кому
+            document.getElementById("valueSubmit").value = value;
+
+            // AJAX-запит
+            $.ajax({
+                url: '@Url.Action("RateManga", "Manga")', // Замініть "ControllerName" на ім'я вашого контролера
+                type: 'POST',
+                data: {
+                    userId: $('input[name="userId"]').val(),
+                    mangaId: $('input[name="mangaId"]').val(),
+                    value: $('input[name="value"]').val()
+                },
+                success: function (response) {
+                    // Обробіть відповідь тут
+                }
+            });
+        })
+
+    </script>
+
+
+</body>
